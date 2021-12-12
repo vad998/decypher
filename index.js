@@ -1,27 +1,65 @@
-const multer = require("multer");
-const fs = require("fs");
-const nodersa = require("node-rsa");
-const express = require("express");
-const serveStatic = require("serve-static");
-const path = require("path");
+import express from "express";
+import nodersa from "node-rsa";
+import fs from "fs";
+import multer from "multer";
+import path from "path";
+import serveStatic from "serve-static";
+
 const PORT = process.env.PORT || 80;
 const app = express();
+const __dirname = path.resolve();
 
 app.use(express.json());
 
-app.post('/decypher/', (req, res, next) => {
-  const keyBuffer = req.files.key.data;
-  const secretBuffer = req.files.secret.data;
-
-  let privateKey = keyBuffer.toString();
-  const decrypted = new nodersa(privateKey).decrypt(secretBuffer);
-
-  res.send(decrypted);
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname);
+  },
 });
 
 app.get('/login/', (req, res) => {
   res.send("vasillesha55");
 });
+
+var upload = multer({ storage: storage });
+
+app.use("/", serveStatic(path.join(__dirname, "/public")));
+
+app.get("/", function (req, res) {
+  res.sendFile(path.join(__dirname, "/public/index.html"));
+});
+
+app.post(
+  "/decrypt",
+  upload.fields([
+    {
+      name: "secret",
+      maxCount: 1,
+    },
+    {
+      name: "key",
+      maxCount: 1,
+    },
+  ]),
+  (req, res, next) => {
+    const files = req.files;
+
+    if (!files) {
+      const error = new Error("Please choose files");
+      error.httpStatusCode = 400;
+      return next(error);
+    }
+
+    const privateKey = fs.readFileSync("./uploads/key", "utf8");
+    const decrypted = new nodersa(privateKey).decrypt(fs.readFileSync("./uploads/secret"), "utf8");
+
+    res.send(decrypted);
+  },
+);
+
 app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);
 });
