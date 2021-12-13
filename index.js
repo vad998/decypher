@@ -5,7 +5,7 @@ import multer from "multer";
 import path from "path";
 import serveStatic from "serve-static";
 
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 5000;
 const app = express();
 const __dirname = path.resolve();
 
