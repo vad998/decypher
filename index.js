@@ -33,7 +33,7 @@ app.get("/", function (req, res) {
 });
 
 app.post(
-  "/decrypt",
+  "/decypher",
   upload.fields([
     {
       name: "secret",
