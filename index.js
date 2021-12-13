@@ -26,7 +26,7 @@ app.get('/login/', (req, res) => {
 
 var upload = multer({ storage: storage });
 
-app.use("/", serveStatic(path.join(__dirname, "/public")));
+//app.use("/", serveStatic(path.join(__dirname, "/public")));
 
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/index.html"));
