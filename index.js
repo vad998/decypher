@@ -1,4 +1,3 @@
-import serveStatic from "serve-static";
 const multer = require("multer");
 const fs = require("fs");
 const nodersa = require("node-rsa");
