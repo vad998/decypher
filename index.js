@@ -7,7 +7,7 @@ const path = require("path");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
-const __dirname = path.resolve();
+const dirname = path.resolve();
 
 app.use(express.json());
 
@@ -26,10 +26,10 @@ app.get('/login/', (req, res) => {
 
 var upload = multer({ storage: storage });
 
-//app.use("/", serveStatic(path.join(__dirname, "/public")));
+app.use("/", serveStatic(path.join(dirname, "/public")));
 
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "/public/index.html"));
+  res.sendFile(path.join(dirname, "/public/index.html"));
 });
 
 app.post(
