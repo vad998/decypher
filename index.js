@@ -1,9 +1,10 @@
-import express from "express";
-import nodersa from "node-rsa";
-import fs from "fs";
-import multer from "multer";
-import path from "path";
 import serveStatic from "serve-static";
+const multer = require("multer");
+const fs = require("fs");
+const nodersa = require("node-rsa");
+const express = require("express");
+const serveStatic = require("serve-static");
+const path = require("path");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
